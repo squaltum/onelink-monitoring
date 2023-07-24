@@ -38,19 +38,19 @@ services:
       - "--http-grace-period=1s"
       - "--prometheus.url=http://prometheus:9090"
       - "--tsdb.path=/data/prom"
-      #- "--objstore.config-file=/bucket.yml"
-      - |
-          --objstore.config=type: S3
-          config: 
-            bucket: 
-            access_key: 
-            secret_key: 
-            #endpoint: s3-website-ap-southeast-1.amazonaws.com
-            endpoint: s3.ap-southeast-1.amazonaws.com
-            region: ap-southeast-1 
-            insecure: false
-            trace:
-              enable: true
+      - "--objstore.config-file=./s3/bucket.yaml"
+      #- |
+      #    --objstore.config=type: S3
+      #    config: 
+      #      bucket: 
+      #      access_key: 
+      #      secret_key: 
+      #      #endpoint: s3-website-ap-southeast-1.amazonaws.com
+      #      endpoint: s3.ap-southeast-1.amazonaws.com
+      #      region: ap-southeast-1 
+      #      insecure: false
+      #      trace:
+      #        enable: true
     expose:
       - 10901
       - 10902

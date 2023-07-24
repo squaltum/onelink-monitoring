@@ -8,35 +8,24 @@ services:
     command:
       - "store"
       - "--log.level=debug"
-      - |
-          --objstore.config=type: S3
-          config:
-            bucket: 
-            access_key: 
-            secret_key: 
-            #endpoint: s3-website-ap-southeast-1.amazonaws.com
-            endpoint: s3.ap-southeast-1.amazonaws.com
-            region: ap-southeast-1
-            insecure: false
-            trace:
-              enable: true
+      - "--objstore.config-file=./s3/bucket.yaml"
       - "--data-dir=/data"
       - "--log.format=logfmt"
       - "--index-cache-size=250MB"
       - "--chunk-pool-size=1GB"
-      - "--grpc-address=0.0.0.0:10905"
+      - "--grpc-address=0.0.0.0:10901"
       - "--grpc-grace-period=1s"
-      - "--http-address=0.0.0.0:10904"
+      - "--http-address=0.0.0.0:10902"
       - "--store.grpc.series-max-concurrency=20"
       - "--sync-block-duration=3m"
       - "--block-sync-concurrency=20"
     restart: unless-stopped
     expose:
-      - 10905
-      - 10904
+      - 10901
+      - 10902
     ports:
-      - '10905:10905'
-      - '10904:10904'
+      - '10901:10901'
+      - '10902:10902'
     networks:
       - thanos
 

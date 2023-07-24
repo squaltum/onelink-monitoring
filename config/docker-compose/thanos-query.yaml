@@ -8,16 +8,16 @@ services:
       - "--debug.name=query"
       - "--log.level=debug"
       - "--log.format=logfmt"
-      - "--grpc-address=0.0.0.0:10903"
+      - "--grpc-address=0.0.0.0:10901"
       - "--grpc-grace-period=1s"
-      - "--http-address=0.0.0.0:10904"
+      - "--http-address=0.0.0.0:10902"
       - "--http-grace-period=1s"
       - "--query.replica-label=prometheus"
       - "--store=172.10.4.142:10901"
       - "--store=172.10.4.237:10905"
     ports:
-      - 10903:10903
-      - 10904:10904
+      - 10901:10901
+      - 10902:10902
     networks:
       - thanos
 
