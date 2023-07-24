@@ -1,0 +1,25 @@
+version: '3.2'
+services:
+  query:
+    image: thanosio/thanos:main-2023-07-20-cdba35b
+    container_name: thanos-query
+    command:
+      - "query"
+      - "--debug.name=query"
+      - "--log.level=debug"
+      - "--log.format=logfmt"
+      - "--grpc-address=0.0.0.0:10903"
+      - "--grpc-grace-period=1s"
+      - "--http-address=0.0.0.0:10904"
+      - "--http-grace-period=1s"
+      - "--query.replica-label=prometheus"
+      - "--store=172.10.4.142:10901"
+      - "--store=172.10.4.237:10905"
+    ports:
+      - 10903:10903
+      - 10904:10904
+    networks:
+      - thanos
+
+networks:
+  thanos: {}

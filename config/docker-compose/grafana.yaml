@@ -1,0 +1,53 @@
+version: '3.3'
+services:
+  #pg_data_wh:
+  #  container_name: pg_data_wh
+  #  image: postgres:15
+  #  restart: always
+  #  environment:
+  #    POSTGRES_DB: my_data_wh_db
+  #    POSTGRES_USER: my_data_wh_user
+  #    POSTGRES_PASSWORD: my_data_wh_pwd
+  #      #ports:
+  #      #  - "5488:5432"
+  #  volumes:
+  #    - ./pg-grafana-wh:/var/lib/postgresql/data
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_DB=my_grafana_db
+      - POSTGRES_USER=my_grafana_user
+      - POSTGRES_PASSWORD=my_grafana_pwd
+        #ports:
+        #  - "5499:5432"
+    volumes:
+      - ./pg-grafana-data:/var/lib/postgresql/data
+    networks:
+      - thanos
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:9.5.6
+    environment:
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=postgres:5432
+      - GF_DATABASE_NAME=my_grafana_db
+      - GF_DATABASE_USER=my_grafana_user
+      - GF_DATABASE_PASSWORD=my_grafana_pwd
+      - GF_DATABASE_SSL_MODE=disable
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana-data:/var/lib/grafana
+    networks:
+      - thanos
+
+networks:
+  thanos: {}

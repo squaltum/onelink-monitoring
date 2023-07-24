@@ -1,0 +1,70 @@
+version: '3.2'
+services:
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: prometheus
+    user: "1001:1001"
+    volumes:
+      - ./prom-data:/data
+      - ./prom-config/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/data/prom"
+      - "--log.level=warn"
+      - "--web.enable-lifecycle"
+      - '--web.enable-admin-api'
+      - '--storage.tsdb.retention.time=2h'
+      - "--storage.tsdb.min-block-duration=2h"
+      - "--storage.tsdb.max-block-duration=2h"
+      - "--web.listen-address=0.0.0.0:9090"
+    restart: unless-stopped
+    expose:
+      - 9090
+    ports:
+      - "9090:9090"
+    networks:
+      - thanos
+
+  sidecar:
+    image: thanosio/thanos:main-2023-07-20-cdba35b
+    container_name: thanos-sidecar
+    command:
+      - "sidecar"
+      - "--debug.name=sidecar"
+      - "--log.level=debug"
+      - "--grpc-address=0.0.0.0:10901"
+      - "--grpc-grace-period=1s"
+      - "--http-address=0.0.0.0:10902"
+      - "--http-grace-period=1s"
+      - "--prometheus.url=http://prometheus:9090"
+      - "--tsdb.path=/data/prom"
+      #- "--objstore.config-file=/bucket.yml"
+      - |
+          --objstore.config=type: S3
+          config: 
+            bucket: 
+            access_key: 
+            secret_key: 
+            #endpoint: s3-website-ap-southeast-1.amazonaws.com
+            endpoint: s3.ap-southeast-1.amazonaws.com
+            region: ap-southeast-1 
+            insecure: false
+            trace:
+              enable: true
+    expose:
+      - 10901
+      - 10902
+    ports:
+      - "10901:10901"
+      - "10902:10902"
+    volumes:
+      - ./prom-data:/data
+      # ./prom-config/bucket.yml:/bucket.yml
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    networks:
+      - thanos
+
+networks:
+  thanos: {}

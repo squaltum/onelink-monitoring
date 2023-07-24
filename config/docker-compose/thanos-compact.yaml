@@ -1,0 +1,42 @@
+version: '3.2'
+services:
+  compactor:
+    image: thanosio/thanos:main-2023-07-20-cdba35b
+    container_name: thanos-compactor
+    command:
+      - "compact"
+      - "--data-dir=/tmp/thanos-compact"
+      - "--log.level=debug"
+      - "--http-address=0.0.0.0:10904"
+      - "--http-grace-period=2m"
+      - "--consistency-delay=30m"
+      - "--retention.resolution-raw=30d"
+      - "--retention.resolution-5m=120d"
+      - "--retention.resolution-1h=1y"
+      - "--compact.concurrency=1"
+      - "--delete-delay=15m"
+      - "--wait"
+      - "--wait-interval=3m"
+      - |
+          --objstore.config=type: S3
+          config: 
+            bucket: 
+            access_key: 
+            secret_key: 
+            #endpoint: s3-website-ap-southeast-1.amazonaws.com
+            endpoint: s3.ap-southeast-1.amazonaws.com
+            region: ap-southeast-1 
+            insecure: false
+            trace:
+              enable: true
+    expose:
+      - 10904
+    ports:
+      - "10904:10904"
+    volumes:
+      - ./data-compact:/tmp
+    networks:
+      - thanos
+
+networks:
+  thanos: {}

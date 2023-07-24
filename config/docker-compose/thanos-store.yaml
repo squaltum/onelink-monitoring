@@ -1,0 +1,44 @@
+version: '3.2'
+services:
+  thanos_store:
+    image: thanosio/thanos:main-2023-07-20-cdba35b
+    container_name: thanos-store
+    volumes:
+      - ./store-data:/data
+    command:
+      - "store"
+      - "--log.level=debug"
+      - |
+          --objstore.config=type: S3
+          config:
+            bucket: 
+            access_key: 
+            secret_key: 
+            #endpoint: s3-website-ap-southeast-1.amazonaws.com
+            endpoint: s3.ap-southeast-1.amazonaws.com
+            region: ap-southeast-1
+            insecure: false
+            trace:
+              enable: true
+      - "--data-dir=/data"
+      - "--log.format=logfmt"
+      - "--index-cache-size=250MB"
+      - "--chunk-pool-size=1GB"
+      - "--grpc-address=0.0.0.0:10905"
+      - "--grpc-grace-period=1s"
+      - "--http-address=0.0.0.0:10904"
+      - "--store.grpc.series-max-concurrency=20"
+      - "--sync-block-duration=3m"
+      - "--block-sync-concurrency=20"
+    restart: unless-stopped
+    expose:
+      - 10905
+      - 10904
+    ports:
+      - '10905:10905'
+      - '10904:10904'
+    networks:
+      - thanos
+
+networks:
+  thanos: {}
