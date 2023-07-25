@@ -2,8 +2,7 @@
 
 How to deploy
 
-Pre-step edit vars for s3 bucket
-     - vi VARS
+Pre-step edit file VARS for s3 bucket
 
 1. Prometheus + Thanos Sidecar
      - cd sripts
