@@ -2,9 +2,11 @@ version: '3.2'
 services:
   blackbox:
     image: prom/blackbox-exporter:v0.24.0
+    expose:
+      - 9115
     ports:
     #- 9115:9115
-    - 10902:10902
+    - 10902:9115
     command:
     - --config.file=/etc/blackbox/blackbox.yml
     volumes:
