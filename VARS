@@ -1,0 +1,5 @@
+bucket=BUCKETNAME 
+access_key=ACCESSKEY
+secret_key=SECRETKEY
+endpoint=S3ENDPOINT
+region=S3REGION

@@ -2,6 +2,9 @@
 
 How to deploy
 
+pre-step edit vars for s3 bucket
+     - vi VARS
+
 1. Prometheus + Thanos Sidecar
      - cd sripts
      - sh prom-sidecar.sh

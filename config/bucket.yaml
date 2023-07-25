@@ -3,9 +3,8 @@ config:
   bucket: BUCKETNAME 
   access_key: ACCESSKEY
   secret_key: SECRETKEY
-  #endpoint: s3-website-ap-southeast-1.amazonaws.com
-  endpoint: s3.ap-southeast-1.amazonaws.com
-  region: ap-southeast-1 
+  endpoint: S3ENDPOINT
+  region: S3REGION
   insecure: false
   trace:
     enable: true
