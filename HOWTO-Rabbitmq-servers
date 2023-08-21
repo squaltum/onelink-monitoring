@@ -1,6 +1,6 @@
 - Complete node_exporter from https://github.com/squaltum/onelink-monitoring/blob/main/HOWTO-Reciever 
 
-- RabbitMQ Cluster deploy
+- RabbitMQ Cluster deploy (Refer: https://www.rabbitmq.com/prometheus.html)
 
   1. Set rabbitmq cluster name
      - rabbitmqctl -q set_cluster_name onelink-rabbitmq-prom1
