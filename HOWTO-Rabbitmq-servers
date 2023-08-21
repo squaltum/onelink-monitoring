@@ -1,0 +1,14 @@
+- Complete node_exporter from https://github.com/squaltum/onelink-monitoring/blob/main/HOWTO-Reciever 
+
+- RabbitMQ Cluster deploy
+
+  1. Set rabbitmq cluster name
+     - rabbitmqctl -q set_cluster_name onelink-rabbitmq-prom1
+  2. run enable rabbitmq_prometheus plugin on all nodes
+     - rabbitmq-plugins enable rabbitmq_prometheus
+  3. test scrape metrics from local each nodes
+     - curl -s http://localhost:15692/metrics
+  4. allow access from prometheus server on AWS to port 15692, test access from prom server
+     - curl -s http://IP-Address:15692/metrics
+
+

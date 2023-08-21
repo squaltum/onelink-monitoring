@@ -1,0 +1,30 @@
+- Install Node Exporter
+
+  1. Download node_exporter source code
+     - wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+  2. Extract file
+     - tar -zxvf node_exporter-1.6.1.linux-amd64.tar.gz
+  3. Copy library to folder
+     - mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
+  4. Create user for run node_exporter
+     - useradd -rs /bin/false node_exporter
+  5. Create file /etc/systemd/system/node_exporter.service
+	[Unit]
+	Description=Node Exporter
+	After=network.target
+
+	[Service]
+	User=node_exporter
+	Group=node_exporter
+	Type=simple
+	ExecStart=/usr/local/bin/node_exporter
+
+	[Install]
+	WantedBy=multi-user.target
+  6. Enable and Start service
+     - systemctl daemon-reload; systemctl enable node_exporter; systemctl start node_exporter
+  7. Allow Firewall
+     - firewall-cmd --zone=public --add-port=9100/tcp --permanent
+  8. Test access from prometheus server on AWS
+     cmd: curl http://IP-Address:9100/metrics
+
