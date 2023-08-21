@@ -1,4 +1,4 @@
-- Complete node_exporter from https://github.com/squaltum/onelink-monitoring/blob/main/HOWTO-Reciever 
+- Complete node_exporter from https://github.com/squaltum/onelink-monitoring/blob/main/HOWTO-Reciever-servers
 
 - PostgreSQL server deploy (refer: https://github.com/prometheus-community/postgres_exporter)
 
